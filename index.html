@@ -1,0 +1,170 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <title>good food</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg nav-style">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="index.html">loss</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+              aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="index.html">home</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="about.html">about</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="contact.html">contact</a>
+                  </li>
+              </ul>
+              <span class="navbar-text">
+                  this is an exploration of loss
+              </span>
+          </div>
+      </div>
+  </nav>
+
+  <div id="mynetwork"></div>
+    
+    <div class="container justify-content-center">
+      
+      <!-- introduction -->
+      <div id="intro">
+      <h1>This is an exploration of loss.</h1>
+      <p>When something in our lives is removed, stolen, or lost, it doesn't leave quietly.</p>
+      <p>Some things stick around, and to truly remove something from your life, there are things you need to get rid of.</p>
+      </div>
+      <!-- example -->
+      <div id="example">
+        <p>This is an example of the kind of graph you can make here. It explores what it would take to remove my roommate from my life. I like the guy.</p>
+        <div id="exampleNetwork" style="justify-content: center; margin-left: auto; margin-right: auto;"></div>
+      </div>
+      <!-- first question -->
+      <div id="zero">
+      <p>What are we going to lose today?</p>
+      <input type="text" name="wow" id="wow" method="get">
+      </div>
+      <!-- second question -->
+      <div id="one">
+        <p>What's the first thing you need to get rid of to forget about this?</p>
+        <input type="text" name="wowwa" id="wowwa" method="get">
+        </div>
+      <!-- dropdown example -->
+      <div id="two">
+        <p>What are we going to lose today?</p>
+        <pre style="text-align: left;" class="col-5">
+          my roommate
+            apartment
+            food
+              viener schnitzel
+            music
+            memories
+            car
+              bluetooth saved device
+        </pre>
+        <textarea name="texttest" id="texttest" cols="80" rows="20"></textarea>
+      </div>
+    
+      <button onclick="tutorial()">NEXT</button>
+    </div>
+    <!-- Optional JavaScript; choose one of the two! -->
+    
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha3/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+      // create an array with nodes
+  
+      var nodes = new vis.DataSet([
+          {id: 1, label: "nick"},
+          {id: 2, label: "apartment"},
+          {id: 3, label: "food"},
+          {id: 4, label: "music"},
+          {id: 5, label: "memories"},
+          {id: 6, label: "car"},
+          {id: 7, label: "bluetooth saved device"},
+          {id: 8, label: ""},
+          {id: 9, label: ""},
+          {id: 10, label: ""},
+          {id: 11, label: ""},
+          {id: 12, label: ""},
+          {id: 13, label: ""},
+          {id: 14, label: ""},
+          {id: 15, label: ""},
+          {id: 16, label: ""},
+          {id: 17, label: ""},
+          {id: 18, label: ""},
+          {id: 19, label: ""},
+          {id: 20, label: ""},
+          {id: 21, label: ""},
+          {id: 22, label: ""},
+          {id: 23, label: ""},
+          {id: 24, label: ""},
+
+
+      ]);
+  
+      // create an array with edges
+      var edges = new vis.DataSet([
+          {from: 1, to: 2},
+          {from: 1, to: 3},
+          {from: 1, to: 4},
+          {from: 1, to: 5},
+          {from: 1, to: 6},
+          {from: 6, to: 7},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+          {from: 1, to: 5},
+      ]);
+  
+      // create a network
+      var container = document.getElementById('exampleNetwork');
+  
+      // provide the data in the vis format
+      var data = {
+          nodes: nodes,
+          edges: edges
+      };
+      var options = {};
+  
+      // initialize your network!
+      var network = new vis.Network(container, data, options);
+  </script>
+
+  </body>
+</html>
