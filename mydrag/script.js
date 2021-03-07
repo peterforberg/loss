@@ -5,7 +5,7 @@ var data = { nodes: [], links: [] };
 
 // function to generate the network object based on the constructed HTML divs
 function generateNetwork() {
-
+    data = { nodes: [], links: [] };
     let rootNode = {
         name: 1,
         name2: document.getElementById("rootName").innerText,
@@ -42,107 +42,118 @@ function generateNetwork() {
         }
     }
     console.log(data);
-    let svgDiv = document.createElement("svg");
-    svgDiv.setAttribute("width", "600");
-    svgDiv.setAttribute("height", "600");
-    document.getElementById("graph").appendChild(svgDiv);
+    // let svgDiv = document.createElement("svg");
+    // svgDiv.setAttribute("width", "600");
+    // svgDiv.setAttribute("height", "600");
+    // svgDiv.id = "svgid";
+    // document.getElementById("graph").appendChild(svgDiv);
+    if (!document.getElementById("svgid")) {
+        
+        d3.select("body").append("svg").attr("width", 600).attr("height", 600).attr("id","svgid");
+    } else {
+        let oldSVG = document.getElementById("svgid");
+        oldSVG.remove();
+        d3.select("body").append("svg").attr("width", 600).attr("height", 600).attr("id","svgid");
+    }
+    return data;
 }
 
+
 // function to generate svg
-// function generatesvg() {
-// var svg = d3.select("svg");
-//     var width = svg.attr("width");
-//     console.log(width);
-//     var height = svg.attr("height");
-//     console.log(height);
+function generatesvg(data) {
+var svg = d3.select("svg");
+    var width = svg.attr("width");
+    console.log(width);
+    var height = svg.attr("height");
+    console.log(height);
 
-//     var simulation = d3
-//         .forceSimulation(data.nodes)
-//         .force(
-//             "link",
-//             d3
-//                 .forceLink()
-//                 .id(function (d) {
-//                     return d.name;
-//                 })
-//                 .links(data.links)
-//         )
+    var simulation = d3
+        .forceSimulation(data.nodes)
+        .force(
+            "link",
+            d3
+                .forceLink()
+                .id(function (d) {
+                    return d.name;
+                })
+                .links(data.links)
+        )
 
-//         .force("charge", d3.forceManyBody().strength(-30))
-//         .force("center", d3.forceCenter(width / 2, height / 2))
-//         .on("tick", ticked);
+        .force("charge", d3.forceManyBody().strength(-30))
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .on("tick", ticked);
 
-//     var link = svg
-//         .append("g")
-//         .attr("class", "links")
-//         .selectAll("line")
-//         .data(data.links)
-//         .enter()
-//         .append("line")
-//         .attr("stroke-width", function (d) {
-//             return 3;
-//         });
+    var link = svg
+        .append("g")
+        .attr("class", "links")
+        .selectAll("line")
+        .data(data.links)
+        .enter()
+        .append("line")
+        .attr("stroke-width", function (d) {
+            return 3;
+        });
 
-//     var node = svg
-//         .append("g")
-//         .attr("class", "nodes")
-//         .selectAll("circle")
-//         .data(data.nodes)
-//         .enter()
-//         .append("circle")
-//         .attr("r", 5)
-//         .attr("fill", function (d) {
-//             return "red";
-//         })
-//         .call(
-//             d3
-//                 .drag()
-//                 .on("start", dragstarted)
-//                 .on("drag", dragged)
-//                 .on("end", dragended)
-//         );
+    var node = svg
+        .append("g")
+        .attr("class", "nodes")
+        .selectAll("circle")
+        .data(data.nodes)
+        .enter()
+        .append("circle")
+        .attr("r", 5)
+        .attr("fill", function (d) {
+            return "red";
+        })
+        .call(
+            d3
+                .drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended)
+        );
 
-//     function ticked() {
-//         link
-//             .attr("x1", function (d) {
-//                 return d.source.x;
-//             })
-//             .attr("y1", function (d) {
-//                 return d.source.y;
-//             })
-//             .attr("x2", function (d) {
-//                 return d.target.x;
-//             })
-//             .attr("y2", function (d) {
-//                 return d.target.y;
-//             });
+    function ticked() {
+        link
+            .attr("x1", function (d) {
+                return d.source.x;
+            })
+            .attr("y1", function (d) {
+                return d.source.y;
+            })
+            .attr("x2", function (d) {
+                return d.target.x;
+            })
+            .attr("y2", function (d) {
+                return d.target.y;
+            });
 
-//         node
-//             .attr("cx", function (d) {
-//                 return d.x;
-//             })
-//             .attr("cy", function (d) {
-//                 return d.y;
-//             });
-//     }
+        node
+            .attr("cx", function (d) {
+                return d.x;
+            })
+            .attr("cy", function (d) {
+                return d.y;
+            });
+    }
 
-//     function dragstarted(d) {
-//         if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-//         d.fx = d.x;
-//         d.fy = d.y;
-//     }
+    function dragstarted(d) {
+        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+    }
 
-//     function dragged(d) {
-//         d.fx = d3.event.x;
-//         d.fy = d3.event.y;
-//     }
+    function dragged(d) {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+    }
 
-//     function dragended(d) {
-//         if (!d3.event.active) simulation.alphaTarget(0);
-//         d.fx = null;
-//         d.fy = null;
-//     }
-// }
+    function dragended(d) {
+        if (!d3.event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+    }
+}
 
 // function to create children nodes
 function addNode(clicked_id) {
