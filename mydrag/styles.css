@@ -19,6 +19,18 @@
   border: solid;
 }
 
-.nodeContainer {
+ .nodeContainer {
   padding-left: 20px;
+  padding-top: 5px;
+}
+
+.nodeStyle {
+  padding-left: 20px;
+  background: lightblue;
+  margin-top:auto;
+  margin-bottom:auto;
+}
+.nodeContainer input {
+  border-radius: 3px;
+  border-color: lightblue;
 }

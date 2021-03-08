@@ -1,7 +1,13 @@
+// to-do
+// create function to deal with duplicates
+// count children nodes for the delete button better
+// incorporate weight / color
+// make the graph draggable
+// allow for different visualizations
+
 // global variables
 var nodes = 1;
 var data = { nodes: [], links: [] };
-// create function to deal with duplicates
 
 // function to generate the network object based on the constructed HTML divs
 function generateNetwork() {
@@ -12,7 +18,7 @@ function generateNetwork() {
         weight: 0
     }
     data.nodes.push(rootNode);
-    for (i = 2; i < nodes; i++) {
+    for (i = 2; i <= nodes; i++) {
         if (document.getElementById(i) != null) {
             if (!document.getElementById("name " + i).value) {
                 var tempName = "";
@@ -57,7 +63,6 @@ function generateNetwork() {
     }
     return data;
 }
-
 
 // function to generate svg
 function generatesvg(data) {
@@ -106,8 +111,7 @@ var svg = d3.select("svg");
             return "red";
         })
         .call(
-            d3
-                .drag()
+            d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended)
@@ -158,16 +162,19 @@ var svg = d3.select("svg");
 // function to create children nodes
 function addNode(clicked_id) {
     let currentNode = document.getElementById(clicked_id);
-    let parentDiv = currentNode.closest("div");
+    let parentDiv = currentNode.closest(".nodeContainer");
     let parentNum = parentDiv.parents;
     console.log(parentNum);
     nodes++;
     // console.log(currentNode);
     // console.log(parentDiv);
-    // create a new div
+    // create a new div with class nodeContainer
     let newDiv = document.createElement("div");
     newDiv.className = "nodeContainer";
     newDiv.id = nodes;
+    // create a new div with class nodeStyle
+    let newStyleDiv = document.createElement("div");
+    newStyleDiv.className = "nodeStyle";
     // create input to name nodes
     let newName = document.createElement("input");
     newName.id = "name " + nodes;
@@ -199,11 +206,12 @@ function addNode(clicked_id) {
     deleter.innerHTML = "x";
     deleter.setAttribute("onclick", "removeNode(this.id)");
     // append new children to div
-    newDiv.appendChild(newName);
-    newDiv.appendChild(newWeight);
-    newDiv.appendChild(newColor);
-    newDiv.appendChild(newNode);
-    newDiv.appendChild(deleter);
+    newStyleDiv.appendChild(newName);
+    newStyleDiv.appendChild(newWeight);
+    newStyleDiv.appendChild(newColor);
+    newStyleDiv.appendChild(newNode);
+    newStyleDiv.appendChild(deleter);
+    newDiv.appendChild(newStyleDiv);
     parentDiv.appendChild(newDiv);
 }
 
@@ -211,7 +219,7 @@ function addNode(clicked_id) {
 // function to delete nodes
 function removeNode(clicked_id) {
     let currentNode = document.getElementById(clicked_id);
-    let parentDiv = currentNode.closest("div");
+    let parentDiv = currentNode.closest(".nodeContainer");
     let nodeNumber = parentDiv.childElementCount - 5;
     if (nodeNumber > 5) {
         let confirmation = confirm("This will delete " + nodeNumber + " nodes, are you sure you want to do this?");
@@ -222,5 +230,3 @@ function removeNode(clicked_id) {
         parentDiv.remove();
     }
 }
-
-// function to generate svg
