@@ -1,11 +1,7 @@
 This is an exploration of loss. The broad strokes of this project are as follows:
 
-The project will allow people to think through the prompt, "What would you need to remove from your life in order to fully remove [thing]?" I originally intend this to think about relationships, but I think it could be an interesting exploration of the removal of many things. So, a person could choose to remove their grandmother from their life, and then they will have to reckon with the things required to remove her entirely. From here on out, it is completely up to the person to decide how they approach this exercise. They start with a central node of the thing they're removing, and then they can attack nodes to it. Each node has all of the following possibilities: give a title, draw a small image, write a short description, add labels, and determine its contribution to the loss in terms of percentage (this last one does not apply to the automatically generated central node). 
+The project will allow people to think through the prompt, "What does it take to remove [thing] from [your life/society]?" I first imagined this project in terms of relationships: after losing a lifelong friend, I drew a massive graph of all of the things it would take to remove her from my life, starting with concrete things like gifts and ending with more abstract things, like verbal tics we had developed or instinctual car routes. The exercise helped me think through the dependencies within relationships, how deeply interwoven my material, social, and psychological life was with her. I wanted to conduct interviews with people as part of an art project, asking them to perform the same exercise and sketch out networks of loss. This project takes that line of thinking and expands it, broadening the prompt to include social issues like "policing," which addresses an entirely different realm of relationships but deserves the same form of thought: what are all of the hidden dependencies?
 
-The website will have 3 pages: index, lose, and gallery. Index, the landing page, will feature a short description of the project and its impetus. Lose will be the main focus of the website, and it will allow people to create networks of loss. Gallery will feature user creations. The navigation will highlight the page you're on, and will read "home", "lose something", and "gallery".
-
-Lose will have a number of features:
-1. At the top, a prompt will read, "Today, I'll try to remove ______ from my life." The user will be able to enter a term in the blank, and from there the process begins.
-2. The first node created will be titled after whatever the user put into it.
-
-"Draw" Mode vs "Text" Mode
+TBW:
+What's included
+How it all works
