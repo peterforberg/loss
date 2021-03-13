@@ -1,59 +1,59 @@
 /* sass --watch scss/style.scss css/style.css */
-button {
+#home button {
   float: right;
   background-color: black;
   color: white;
 }
 
-#example {
+#home #example {
   display: none;
 }
 
-#zero {
+#home #zero {
   display: none;
 }
 
-#one {
+#home #one {
   display: none;
 }
 
-#two {
+#home #two {
   display: none;
 }
 
-#exampleNetwork {
+#home #exampleNetwork {
   width: 600px;
   height: 400px;
 }
 
-body {
+#home {
   font-family: "Roboto Slab", serif;
 }
 
-.nav-style {
+#home .nav-style {
   font-family: "Roboto Slab", serif;
   color: black;
   background: white;
 }
 
-a {
+#home a {
   color: black;
 }
 
-p {
+#home p {
   font-size: 3em;
 }
 
-#intro p {
+#home #intro p {
   font-size: 1.5rem !important;
 }
 
-input {
+#home input {
   margin: 20px;
   text-align: center;
 }
 
-.container {
+#home .container {
   text-align: center;
   padding: 10%;
 }
@@ -72,6 +72,45 @@ input {
   z-index: 10;
   background-color: #2196F3;
   color: #fff;
+}
+
+#div1, #div2 {
+  float: left;
+  width: 100px;
+  height: 35px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid red;
+}
+
+.parentDiv {
+  border: solid;
+}
+
+.childDiv {
+  border: solid;
+}
+
+.divDiv {
+  border: solid;
+}
+
+.nodeContainer {
+  padding-left: 20px;
+  padding-top: 5px;
+  border: solid;
+}
+
+.nodeStyle {
+  padding-left: 20px;
+  background: lightblue;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.nodeContainer input {
+  border-radius: 3px;
+  border-color: lightblue;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -8,6 +8,7 @@
 // global variables
 var nodes = 1;
 var data = { nodes: [], links: [] };
+var names = [];
 
 // function to generate the network object based on the constructed HTML divs
 function generateNetwork() {
@@ -17,14 +18,17 @@ function generateNetwork() {
         name2: document.getElementById("rootName").innerText,
         weight: 0
     }
+    names.push(rootNode.name2);
     data.nodes.push(rootNode);
     for (i = 2; i <= nodes; i++) {
         if (document.getElementById(i) != null) {
             if (!document.getElementById("name " + i).value) {
                 var tempName = "";
+                names.push(tempName);
             } else {
-                var tempName = document.getElementById("name " + i).value;
-            }
+                 var tempName = document.getElementById("name " + i).value;
+                 names.push(tempName);
+            } 
             if (!document.getElementById("weight " + i).value) {
                 var tempWeight = 0;
             } else {
@@ -36,6 +40,11 @@ function generateNetwork() {
                 weight: tempWeight
             };
             data.nodes.push(node);
+        }
+    }
+    for (i in names) {
+        if (i == )
+    }
             if (document.getElementById(i).parentElement.id != null) {
                 var tempSource = parseInt(document.getElementById(i).id);
                 var tempTarget = parseInt(document.getElementById(i).parentElement.id);
@@ -46,7 +55,7 @@ function generateNetwork() {
                 data.links.push(link);
             }
         }
-    }
+    
     console.log(data);
     // let svgDiv = document.createElement("svg");
     // svgDiv.setAttribute("width", "600");
@@ -172,9 +181,14 @@ function addNode(clicked_id) {
     let newDiv = document.createElement("div");
     newDiv.className = "nodeContainer";
     newDiv.id = nodes;
+    newDiv.setAttribute("ondrop","drop(event)");
+    newDiv.setAttribute("ondragover","allowDrop(event)");
+    newDiv.setAttribute("draggable","true");
+    newDiv.setAttribute("ondragstart","drag(event)");
     // create a new div with class nodeStyle
     let newStyleDiv = document.createElement("div");
     newStyleDiv.className = "nodeStyle";
+    newStyleDiv.setAttribute("draggable","true");
     // create input to name nodes
     let newName = document.createElement("input");
     newName.id = "name " + nodes;
