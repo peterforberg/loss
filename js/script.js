@@ -1,8 +1,8 @@
-// global variables
+// Global variables
 if (window.location.pathname == "/lose.html") {
     var nodes = 1;
 } else {
-    var nodes = 4;
+    var nodes = 4; // For the tutorial, which starts with 4 nodes
 }
 
 var data = { nodes: [], links: [] };
@@ -12,7 +12,8 @@ var node_names = [];
 function generateNetwork() {
     data = { nodes: [], links: [] };
     node_names = [];
-    for (i = 1; i <= nodes; i++) {
+    // Assigns links for all nodes except the starting node, which is initially just linked to itself
+    for (i = 1; i <= nodes; i++) { 
         if (i == 1) {
             var tempSourceName = document.getElementById("name " + i).value;
             let link = {
@@ -32,6 +33,7 @@ function generateNetwork() {
             }
             data.links.push(link);
         }
+        // Assigns nodes their names, colors, and sizes before adding them to the array
         if (document.getElementById("name " + i) != null) {
             var tempSourceName = document.getElementById("name " + i).value;
             var tempSourceColor = document.getElementById("color " + i).value;
@@ -55,8 +57,8 @@ function generateNetwork() {
         }
     }
     console.log(data)
-    var data_export = data;
-
+    // var data_export = data;
+    // Deletes and appends the svg using D3 to refresh the graph (not the most efficient at large scale, but fine here)
     if (!document.getElementById("svgid")) {
 
         d3.select("#graph").append("svg").attr("width", 600).attr("height", 600).attr("id", "svgid");
@@ -65,9 +67,12 @@ function generateNetwork() {
         oldSVG.remove();
         d3.select("#graph").append("svg").attr("width", 600).attr("height", 600).attr("id", "svgid");
     }
+    // Ultimately, this function returns an array of nodes and links based on the DOM
     return data;
 }
 
+// This function is all D3, standard code from the API documentation
+// This is what appends elements to the SVG based on the data in the array we just made
 function generatesvg() {
     const simulation = d3.forceSimulation(data.nodes)
       .force("link", d3.forceLink(data.links).id(d => d.name).distance(50))
@@ -88,7 +93,6 @@ function generatesvg() {
                     .on("start", dragstarted)
                     .on("drag", dragged)
                     .on("end", dragended);
-
 
                     var labelledNodes = svg
                     .append("g")
@@ -131,7 +135,6 @@ function generatesvg() {
         });
 
     function dragstarted(event, d) {
-            //your alpha hit 0 it stops! make it run again
             simulation.alphaTarget(0.3).restart();
             d.fx = event.x;
             d.fy = event.y;
@@ -142,13 +145,12 @@ function generatesvg() {
         }
     
     function dragended(event, d) {
-            // alpha min is 0, head there
             simulation.alphaTarget(0);
             d.fx = null;
             d.fy = null;
         }
 }
-// function to create children nodes
+// Function to create children nodes in the DOM
 function addNode(clicked_id) {
     let currentNode = document.getElementById(clicked_id);
     let nodeID = clicked_id.slice(5);
@@ -171,18 +173,18 @@ function addNode(clicked_id) {
     newDiv.setAttribute("ondragover", "allowDrop(event)");
     newDiv.setAttribute("draggable", "true");
     newDiv.setAttribute("ondragstart", "drag(event)");
-    // create a new div with class nodeStyle
+    // Create a new div with class nodeStyle
     let newStyleDiv = document.createElement("div");
     newStyleDiv.className = "nodeStyle";
     newStyleDiv.setAttribute("draggable", "true");
-    // create input to name nodes
+    // Create input to name nodes
     let newName = document.createElement("input");
     newName.id = "name " + nodes;
     let newNameName = "name " + nodes;
     newName.setAttribute("type", "text");
     newName.setAttribute("name", newNameName);
     newName.setAttribute("placeholder", "enter name");
-    // create input to give nodes a size
+    // Create input to give nodes a size
     let sizeBS = document.createElement("button");
     sizeBS.id = "smallB " + nodes;
     sizeBS.style.height = "12px";
@@ -213,24 +215,24 @@ function addNode(clicked_id) {
     sizeBL.style.border = "0";
     sizeBL.style.outline = "none";
     sizeBL.setAttribute("onclick", "largeB(this.id)")
-    // create input to assign node colors
+    // Create input to assign node colors
     let newColor = document.createElement("input");
     newColor.id = "color " + nodes;
     let newColorName = "name " + nodes;
     newColor.setAttribute("type", "color");
     newColor.setAttribute("name", newColorName);
     newColor.setAttribute("value", parentColor);
-    // create button to add nodes
+    // Create button to add nodes
     let newNode = document.createElement("button");
     newNode.id = "node " + nodes;
     newNode.innerHTML = "+";
     newNode.setAttribute("onclick", "addNode(this.id)");
-    // create button to remove nodes
+    // Create button to remove nodes
     let deleter = document.createElement("button");
     deleter.id = "delete " + nodes;
     deleter.innerHTML = "x";
     deleter.setAttribute("onclick", "removeNode(this.id)");
-    // append new children to div
+    // Append new children to div
     newStyleDiv.appendChild(newName);
     newStyleDiv.appendChild(sizeBS);
     newStyleDiv.appendChild(sizeBM);
@@ -242,7 +244,9 @@ function addNode(clicked_id) {
     parentDiv.appendChild(newDiv);
 }
 
-// function to delete nodes
+// Function to delete nodes
+// It checks the number of nodes to be deleted
+// Most of this code block is just recreating the starting node (should the user decide to delete it)
 function removeNode(clicked_id) {
     let currentNode = document.getElementById(clicked_id);
     let parentDiv = currentNode.closest(".nodeContainer");
@@ -421,7 +425,8 @@ function removeNode(clicked_id) {
     }
 }
 
-// functions to keep track of node size
+// Functions to keep track of node size
+// Each node div has three size buttons; basically, these say "if you clicked me, you unclick the other two"
 function smallB(clicked_id) {
     document.getElementById(clicked_id).style.opacity = "1";
     document.getElementById("mediumB " + clicked_id.slice(7)).style.opacity = ".5";
@@ -438,7 +443,7 @@ function largeB(clicked_id) {
     document.getElementById("smallB " + clicked_id.slice(7)).style.opacity = ".5";
 }
 
-// function to drag and drop
+// Function to drag and drop
 function allowDrop(ev) {
     ev.preventDefault();
 }
@@ -458,7 +463,7 @@ function drop(ev) {
     }
 }
 
-// function to export 
+// Function to export 
 function exportNetwork(data_export) {
 const filename = 'data.json';
 const jsonStr = JSON.stringify(data_export);

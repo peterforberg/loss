@@ -1,3 +1,4 @@
+// A modified template for creating rolling text
 function dataWord () {
 
     $("[data-words]").attr("data-words", function(i, d){

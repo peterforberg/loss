@@ -1,4 +1,4 @@
-
+// This function just steps through the elements to progress the tutorial
 function tutorial(clicked_id) {
     var step = parseInt(clicked_id[4]);
     document.getElementById("tut" + step).style.display = "none";
@@ -8,7 +8,7 @@ function tutorial(clicked_id) {
         document.getElementById("name " + (step - 1)).value = nodeQ;
     };
 };
-
+// This is how I track which topics they have selected from the initial prompt
 function tutorialTopics() {
     var object = document.getElementById("object");
     var objectR = object.value;
@@ -90,6 +90,7 @@ function tutorialTopics() {
     }
 }
 
+// Truly no reason for this function to exist
 function tutorialNodes(clicked_id) {
     var nodeQ = parseInt(clicked_id[4]);
     console.log(document.getElementById("tutq" + nodeQ).value)

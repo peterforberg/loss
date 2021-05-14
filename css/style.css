@@ -2,7 +2,7 @@
 Command to activate the under-used SASS file:
 sass --watch scss/style.scss css/style.css 
 */
-
+/* Navbar styling */
 a {
   text-decoration: none;
   color:black !important;

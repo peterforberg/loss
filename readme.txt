@@ -1,10 +1,19 @@
-This is an exploration of loss. The broad strokes of this project are as follows:
+Hello! Welcome to the readme.
 
-The project will allow people to think through the prompt, "What does it take to remove [thing] from [your life/society]?" I first imagined this project in terms of relationships: after losing a lifelong friend, I drew a massive graph of all of the things it would take to remove her from my life, starting with concrete things like gifts and ending with more abstract things, like verbal tics we had developed or instinctual car routes. The exercise helped me think through the dependencies within relationships, how deeply interwoven my material, social, and psychological life was with her. I wanted to conduct interviews with people as part of an art project, asking them to perform the same exercise and sketch out networks of loss. This project takes that line of thinking and expands it, broadening the prompt to include social issues like "policing," which addresses an entirely different realm of relationships but deserves the same form of thought: what are all of the hidden dependencies?
+The basic power of the code I've provided here is the easy creation of network data in a relatively user-friendly interface. That means that there is a lot of JavaScript and D3 to explore, while the HTML and CSS are unlikely to draw any attention.
 
-TBW:
-What's included
-How it all works
+This site is fairly small, and the bulk of the interesting work takes place in script.js. The site itself is available to use at https://loss.peterforberg.com, but if you wish to run it on your local system, it should be as easy as unzipping this folder and opening any of the HTML pages. This site has not been optimized for mobile devices, though everything should work with touchscreens and tablets.
 
-To-do:
-1. 
+As you might've noticed, this document was written in a text editor with word wrap on, which I would suggest generally for ease of reading the code here.
+
+OK, so the basics are this:
+- style.css contains all external styling.
+- example.js provides the JavaScript for index.html's example graphs
+- tutorial.js powers tutorial.html with a little help from script.js
+- script.js powers the entirety of this tool, namely lose.html
+- about.html is very short and sweet html
+- there is sass on this site, not even used once, I just like the sass functionality and thought I might leverage it
+
+If, while using the network tool, you decide to export your data and want to quickly visualize it, I would recommend using it to replace the current value of the variable "data" in example.js (where the "meat" networks are stored) and then resizing the svg to whatever size you desire (currently it's 800x600, but 100vw and 100vh would make it full screen).
+
+I think that should be all, enjoy!
