@@ -65,6 +65,10 @@ body .container {
   padding-right: 15%;
 }
 
+option {
+  font-size: 1.5rem;
+}
+
 /* Stylings for the network tool*/
 .nodeContainer {
   padding-left: 20px;

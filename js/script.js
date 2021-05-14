@@ -151,9 +151,15 @@ function generatesvg() {
 // function to create children nodes
 function addNode(clicked_id) {
     let currentNode = document.getElementById(clicked_id);
+    let nodeID = clicked_id.slice(5);
+    // console.log(nodeID);
+    // console.log(currentNode);
     let parentDiv = currentNode.closest(".nodeContainer");
+    // console.log("parent div:")
+    // console.log(parentDiv);
+    let parentColor = document.getElementById("color " + nodeID).value;
+    // console.log(parentColor);
     let parentNum = parentDiv.parents;
-    console.log(parentNum);
     nodes++;
     // console.log(currentNode);
     // console.log(parentDiv);
@@ -213,7 +219,7 @@ function addNode(clicked_id) {
     let newColorName = "name " + nodes;
     newColor.setAttribute("type", "color");
     newColor.setAttribute("name", newColorName);
-    newColor.setAttribute("value", "#A70C0C");
+    newColor.setAttribute("value", parentColor);
     // create button to add nodes
     let newNode = document.createElement("button");
     newNode.id = "node " + nodes;
@@ -442,9 +448,14 @@ function drag(ev) {
 }
 
 function drop(ev) {
+    // console.log(ev.target);
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
+    if (ev.target.classList.contains("nodeContainer")) {
     ev.target.appendChild(document.getElementById(data));
+    } else {
+        console.log("not a node container");
+    }
 }
 
 // function to export 

@@ -99,13 +99,13 @@ var person_life = ["What's something that you two share?", "What's a memory that
 var person_society = ["What's something that this person has contributed to society?", "What's a lasting effect of their contribution?", "What's a social practice that they help to perpetuate?"];
 var person_history = ["What's a historical event this person has had a hand in?", "What's a lasting effect of this historical event?", "What's a material impact of their presence?"];
 
-var institution_life = ["What is one way thing this institution adds to your life?", "What is an effect of the thing this institution adds to your life?", "What is one way thing this institution takes from your life?"];
-var institution_society = ["What is one way thing this institution adds to society?", "What is an effect of the thing this institution adds to society?", "What is one way thing this institution takes from society?"];
-var institution_history = ["What is an effect this this institution had on history?", "What is one material way that that effect persists?", "What was the historical precursor to this instituion?"];
+var institution_life = ["What is one way that this institution adds to your life?", "What is an effect of the thing this institution adds to your life?", "What is one way that this institution takes from your life?"];
+var institution_society = ["What is one way that this institution adds to society?", "What is an effect of the thing this institution adds to society?", "What is one way that this institution takes from society?"];
+var institution_history = ["What is an effect that this institution had on history?", "What is one material way that that effect persists?", "What was the historical precursor to this institution?"];
 
-var thing_life = ["What's one way this thing manifests itself in your life?", "What's an effect of this manifestation?", "Who has given you this thing, or where did you get it from?"];
+var thing_life = ["What's one way that this thing manifests itself in your life?", "What's an effect of this manifestation?", "Who has given you this thing, or where did you get it from?"];
 var thing_society = ["How is this thing made?", "Who are some of the people who make it?", "Who are some of the people who use it?"];
-var thing_history = ["What's a historical even when this thing was used?", "What's an effect of that historical event?", "Who used to make this thing?"];
+var thing_history = ["What's a historical event when/where this thing was used?", "What's an effect of that historical event?", "Who used to make this thing?"];
 
 var concept_life = ["What's an example of how this concept takes shape in your life?", "What's an effect of this concept taking shape in this way?", "Who do you see believing in or practicing this concept?"];
 var concept_society = ["What's an example of how this concept takes shape in society?", "What's an effect of this concept taking shape in this way?", "What's an example of how society embraces this concept?"];
@@ -117,5 +117,5 @@ var system_history = ["What is a manifestation of this system in history?", "Wha
 
 var event_life = ["Name someone who was involved in this event.", "What has this person gone on to do or not do because of it?", "What is something you chose to do or not do because of this event?"];
 var event_society = ["Name a group of people who were involved in this event.", "What has this group of people gone on to do or not to do because of it?", "What is one of the lasting signs of this event in society?"];
-var event_history = ["Name another event that was caused by this event.", "What is one way the your previously answered event continues to be seen in society?", "Who was involved in this event?"];
+var event_history = ["Name an event caused by your event.", "Name an event that that event caused.", "Who was involved in the original event?"];
 
