@@ -5,3 +5,6 @@ The project will allow people to think through the prompt, "What does it take to
 TBW:
 What's included
 How it all works
+
+To-do:
+1. 

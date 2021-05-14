@@ -1,116 +1,163 @@
-/* sass --watch scss/style.scss css/style.css */
-#home button {
-  float: right;
-  background-color: black;
-  color: white;
+/* 
+Command to activate the under-used SASS file:
+sass --watch scss/style.scss css/style.css 
+*/
+
+a {
+  text-decoration: none;
+  color:black !important;
 }
 
-#home #example {
-  display: none;
-}
-
-#home #zero {
-  display: none;
-}
-
-#home #one {
-  display: none;
-}
-
-#home #two {
-  display: none;
-}
-
-#home #exampleNetwork {
-  width: 600px;
-  height: 400px;
-}
-
-#home {
+.navbar {
   font-family: "Roboto Slab", serif;
 }
 
-#home .nav-style {
+a:hover {
+  color: #A70C0C !important;
+}
+
+.nav-link {
   font-family: "Roboto Slab", serif;
-  color: black;
-  background: white;
 }
 
-#home a {
-  color: black;
+/* Styling for the header image */
+.header {
+    position: relative;
+    text-align: center;
+    color: white;
 }
 
-#home p {
-  font-size: 3em;
-}
-
-#home #intro p {
-  font-size: 1.5rem !important;
-}
-
-#home input {
-  margin: 20px;
-  text-align: center;
-}
-
-#home .container {
-  text-align: center;
-  padding: 10%;
-}
-
-#mydiv {
+.centered {
   position: absolute;
-  z-index: 9;
-  background-color: #f1f1f1;
-  border: 1px solid #d3d3d3;
-  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Roboto Slab", serif;
+  color: black;
+  font-size: 6rem;
+  -webkit-text-stroke: 1px white;
 }
 
-#mydivheader {
-  padding: 10px;
-  cursor: move;
-  z-index: 10;
-  background-color: #2196F3;
-  color: #fff;
+/* General styling */
+body p {
+  font-family: "Times New Roman", serif;
+  font-size: 1.3em;
 }
 
-#div1, #div2 {
-  float: left;
-  width: 100px;
-  height: 35px;
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid red;
+.writing a {
+  font-family: "Times New Roman", serif;
+  color:#A70C0C !important;
 }
 
-.parentDiv {
-  border: solid;
+
+body li {
+  font-family: "Times New Roman", serif;
+  font-size: 1.3em;
 }
 
-.childDiv {
-  border: solid;
+body h1 {
+  font-family: "Roboto Slab", serif;
+  font-size: 1.3em;
 }
 
-.divDiv {
-  border: solid;
+body .container {
+  padding-left: 15%;
+  padding-right: 15%;
 }
 
+/* Stylings for the network tool*/
 .nodeContainer {
   padding-left: 20px;
   padding-top: 5px;
-  border: solid;
+  border: 1px white;
+  border-style: solid solid none;
+  background-image: linear-gradient(left, hsla(0, 87%, 35%, 0.5), hsla(0, 87%, 35%, 0.5) 20px, transparent 20px, transparent 50%);
+  background-image: -webkit-linear-gradient(left, hsla(0, 87%, 35%, 0.5), hsla(0, 87%, 35%, 0.5) 20px, transparent 20px, transparent 50%);
 }
 
 .nodeStyle {
   padding-left: 20px;
-  background: lightblue;
+  background: white;
   margin-top: auto;
   margin-bottom: auto;
 }
 
-.nodeContainer input {
-  border-radius: 3px;
-  border-color: lightblue;
+#hierarchy input {
+  border: none;
+  outline: none;
+  background-color: white;
+  padding-top: 5px;
 }
 
-/*# sourceMappingURL=style.css.map */
+#hierarchy button {
+  margin: 2px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background-color: hsla(0, 87%, 35%, 0.5);
+  color: white;
+}
+
+button {
+  width: 80px;
+  height: 35px;
+  border: none;
+  background-color: hsla(0, 87%, 35%, 0.5);
+  color: white;
+}
+
+/* Styling for the questions on the network tool */
+#wordcycle {
+  display: block;
+  margin-right: 40%;
+  padding-bottom: 60px;
+  /* position: static; */
+}
+
+#wordcycle p {
+  text-align: center; 
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 2em;
+}
+
+[data-words]{
+  /* vertical-align: top; */
+  /* horizontal-align: ; */
+  position: static;
+}
+[data-words] > span{
+  position: absolute;
+  color: black;
+}
+
+/* Styling for the tutorial */
+
+.tutorial {
+display: flex;
+justify-content: center;
+text-align: center;
+}
+
+.tutorial p {
+  text-align:center;
+  font-size: 3.5rem;
+  padding-top: 25vh;
+}
+
+.tutorial select {
+  border: none;
+  outline: none;
+  text-decoration: black;
+  color: #A70C0C;
+}
+
+.tutorial button {
+  border: none;
+  color: white;
+  margin-top: 10px;
+}
+
+.tutorial input {
+  text-align: center;
+  font-size: larger;
+}

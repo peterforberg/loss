@@ -1,164 +1,153 @@
-// to-do
-// create function to deal with duplicates
-// count children nodes for the delete button better
-// incorporate weight / color
-// make the graph draggable
-// allow for different visualizations
-
 // global variables
-var nodes = 1;
-var data = { nodes: [], links: [] };
+if (window.location.pathname == "/lose.html") {
+    var nodes = 1;
+} else {
+    var nodes = 4;
+}
 
-// function to generate the network object based on the constructed HTML divs
+var data = { nodes: [], links: [] };
+var node_names = [];
+
+// Function to generate the network object (or the data) based on the constructed HTML divs
 function generateNetwork() {
     data = { nodes: [], links: [] };
-    let rootNode = {
-        name: 1,
-        name2: document.getElementById("rootName").innerText,
-        weight: 0
-    }
-    data.nodes.push(rootNode);
-    for (i = 2; i <= nodes; i++) {
-        if (document.getElementById(i) != null) {
-            if (!document.getElementById("name " + i).value) {
-                var tempName = "";
-            } else {
-                var tempName = document.getElementById("name " + i).value;
+    node_names = [];
+    for (i = 1; i <= nodes; i++) {
+        if (i == 1) {
+            var tempSourceName = document.getElementById("name " + i).value;
+            let link = {
+                source: tempSourceName,
+                target: tempSourceName,
+                identity: i
             }
-            if (!document.getElementById("weight " + i).value) {
-                var tempWeight = 0;
-            } else {
-                var tempWeight = document.getElementById("weight " + i).value;
+            data.links.push(link);
+        } else if (document.getElementById(i) != null && document.getElementById(i).parentElement.id != null) {
+            var tempSourceName = document.getElementById("name " + i).value;
+            var tempTargetId = parseInt(document.getElementById(i).parentElement.id);
+            var tempTargetName = document.getElementById("name " + tempTargetId).value;
+            let link = {
+                source: tempSourceName,
+                target: tempTargetName,
+                identity: i
             }
-            let node = {
-                name: i,
-                name2: tempName,
-                weight: tempWeight
-            };
-            data.nodes.push(node);
-            if (document.getElementById(i).parentElement.id != null) {
-                var tempSource = parseInt(document.getElementById(i).id);
-                var tempTarget = parseInt(document.getElementById(i).parentElement.id);
-                let link = {
-                    source: tempSource,
-                    target: tempTarget
-                }
-                data.links.push(link);
+            data.links.push(link);
+        }
+        if (document.getElementById("name " + i) != null) {
+            var tempSourceName = document.getElementById("name " + i).value;
+            var tempSourceColor = document.getElementById("color " + i).value;
+            if (parseFloat(document.getElementById("smallB " + i).style.opacity) > .5) {
+                var tempSourceSize = 5;
+            } else if (parseFloat(document.getElementById("mediumB " + i).style.opacity) > .5) {
+                var tempSourceSize = 10;
+            } else {
+                var tempSourceSize = 20;
             }
         }
+        if (!node_names.includes(tempSourceName)) {
+            node_names.push(tempSourceName);
+
+            let node = {
+                name: tempSourceName,
+                color: tempSourceColor,
+                size: tempSourceSize
+            };
+            data.nodes.push(node);
+        }
     }
-    console.log(data);
-    // let svgDiv = document.createElement("svg");
-    // svgDiv.setAttribute("width", "600");
-    // svgDiv.setAttribute("height", "600");
-    // svgDiv.id = "svgid";
-    // document.getElementById("graph").appendChild(svgDiv);
+    console.log(data)
+    var data_export = data;
+
     if (!document.getElementById("svgid")) {
-        
-        d3.select("body").append("svg").attr("width", 600).attr("height", 600).attr("id","svgid");
+
+        d3.select("#graph").append("svg").attr("width", 600).attr("height", 600).attr("id", "svgid");
     } else {
         let oldSVG = document.getElementById("svgid");
         oldSVG.remove();
-        d3.select("body").append("svg").attr("width", 600).attr("height", 600).attr("id","svgid");
+        d3.select("#graph").append("svg").attr("width", 600).attr("height", 600).attr("id", "svgid");
     }
     return data;
 }
 
-// function to generate svg
-function generatesvg(data) {
-var svg = d3.select("svg");
-    var width = svg.attr("width");
-    console.log(width);
-    var height = svg.attr("height");
-    console.log(height);
+function generatesvg() {
+    const simulation = d3.forceSimulation(data.nodes)
+      .force("link", d3.forceLink(data.links).id(d => d.name).distance(50))
+      .force("charge", d3.forceManyBody())
+      .force("center", d3.forceCenter(300, 300));
 
-    var simulation = d3
-        .forceSimulation(data.nodes)
-        .force(
-            "link",
-            d3
-                .forceLink()
-                .id(function (d) {
-                    return d.name;
-                })
-                .links(data.links)
-        )
+    const svg = d3.select("#svgid");
 
-        .force("charge", d3.forceManyBody().strength(-30))
-        .force("center", d3.forceCenter(width / 2, height / 2))
-        .on("tick", ticked);
+    const links = svg.selectAll("line")
+                    .data(data.links)
+                    .enter()
+                    .append("line")
+                    .attr("stroke", "black")
+                    .attr("stroke-width", 2);
 
-    var link = svg
-        .append("g")
-        .attr("class", "links")
-        .selectAll("line")
-        .data(data.links)
-        .enter()
-        .append("line")
-        .attr("stroke-width", function (d) {
-            return 3;
+    var drag = d3
+                    .drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended);
+
+
+                    var labelledNodes = svg
+                    .append("g")
+                    .selectAll("g")
+                    .data(data.nodes)
+                    .enter()
+                    .append("g")
+                    .call(drag);
+                
+                var nodes = labelledNodes
+                    .append("circle")
+                    .attr("r", d => d.size)
+                    .attr("fill", d => d.color);
+                
+                var texts = labelledNodes
+                    .append("text")
+                    .text(d => d.name)
+                    .attr("fill", "none")
+                    .attr("stroke", "white")
+                    .attr("stroke-width", 3)
+                    .clone(true)
+                    .attr("stroke", "black")
+                    .attr("stroke-width", .5)
+                    .attr("fill", "black");
+    
+    simulation.on('tick', () => {
+            labelledNodes.attr("transform", function(d) {
+                return "translate(" + d.x + ", " + d.y +")";
+            }); 
+
+            labelledNodes
+               .attr("cx", d => d.x)
+               .attr("cy", d => d.y);
+            
+            links
+               .attr("x1", d => d.source.x)
+               .attr("y1", d => d.source.y)
+               .attr("x2", d => d.target.x)
+               .attr("y2", d => d.target.y)
         });
 
-    var node = svg
-        .append("g")
-        .attr("class", "nodes")
-        .selectAll("circle")
-        .data(data.nodes)
-        .enter()
-        .append("circle")
-        .attr("r", 5)
-        .attr("fill", function (d) {
-            return "red";
-        })
-        .call(
-            d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended)
-        );
-
-    function ticked() {
-        link
-            .attr("x1", function (d) {
-                return d.source.x;
-            })
-            .attr("y1", function (d) {
-                return d.source.y;
-            })
-            .attr("x2", function (d) {
-                return d.target.x;
-            })
-            .attr("y2", function (d) {
-                return d.target.y;
-            });
-
-        node
-            .attr("cx", function (d) {
-                return d.x;
-            })
-            .attr("cy", function (d) {
-                return d.y;
-            });
-    }
-
-    function dragstarted(d) {
-        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-        d.fx = d.x;
-        d.fy = d.y;
-    }
-
-    function dragged(d) {
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
-    }
-
-    function dragended(d) {
-        if (!d3.event.active) simulation.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
-    }
+    function dragstarted(event, d) {
+            //your alpha hit 0 it stops! make it run again
+            simulation.alphaTarget(0.3).restart();
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+    function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+    
+    function dragended(event, d) {
+            // alpha min is 0, head there
+            simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
 }
-
 // function to create children nodes
 function addNode(clicked_id) {
     let currentNode = document.getElementById(clicked_id);
@@ -172,14 +161,14 @@ function addNode(clicked_id) {
     let newDiv = document.createElement("div");
     newDiv.className = "nodeContainer";
     newDiv.id = nodes;
-    newDiv.setAttribute("ondrop","drop(event)");
-    newDiv.setAttribute("ondragover","allowDrop(event)");
-    newDiv.setAttribute("draggable","true");
-    newDiv.setAttribute("ondragstart","drag(event)");
+    newDiv.setAttribute("ondrop", "drop(event)");
+    newDiv.setAttribute("ondragover", "allowDrop(event)");
+    newDiv.setAttribute("draggable", "true");
+    newDiv.setAttribute("ondragstart", "drag(event)");
     // create a new div with class nodeStyle
     let newStyleDiv = document.createElement("div");
     newStyleDiv.className = "nodeStyle";
-    newStyleDiv.setAttribute("draggable","true");
+    newStyleDiv.setAttribute("draggable", "true");
     // create input to name nodes
     let newName = document.createElement("input");
     newName.id = "name " + nodes;
@@ -187,19 +176,44 @@ function addNode(clicked_id) {
     newName.setAttribute("type", "text");
     newName.setAttribute("name", newNameName);
     newName.setAttribute("placeholder", "enter name");
+    // create input to give nodes a size
+    let sizeBS = document.createElement("button");
+    sizeBS.id = "smallB " + nodes;
+    sizeBS.style.height = "12px";
+    sizeBS.style.width = "12px";
+    sizeBS.style.borderRadius = "6px";
+    sizeBS.style.backgroundColor = "black";
+    sizeBS.style.opacity = "0.5";
+    sizeBS.style.border = "0";
+    sizeBS.style.outline = "none";
+    sizeBS.setAttribute("onclick", "smallB(this.id)")
+    let sizeBM = document.createElement("button");
+    sizeBM.id = "mediumB " + nodes;
+    sizeBM.style.height = "16px";
+    sizeBM.style.width = "16px";
+    sizeBM.style.borderRadius = "8px";
+    sizeBM.style.backgroundColor = "black";
+    sizeBM.style.opacity = "1";
+    sizeBM.style.border = "0";
+    sizeBM.style.outline = "none";
+    sizeBM.setAttribute("onclick", "mediumB(this.id)")
+    let sizeBL = document.createElement("button");
+    sizeBL.id = "largeB " + nodes;
+    sizeBL.style.height = "20px";
+    sizeBL.style.width = "20px";
+    sizeBL.style.borderRadius = "10px";
+    sizeBL.style.backgroundColor = "black";
+    sizeBL.style.opacity = "0.5";
+    sizeBL.style.border = "0";
+    sizeBL.style.outline = "none";
+    sizeBL.setAttribute("onclick", "largeB(this.id)")
     // create input to assign node colors
     let newColor = document.createElement("input");
     newColor.id = "color " + nodes;
     let newColorName = "name " + nodes;
     newColor.setAttribute("type", "color");
     newColor.setAttribute("name", newColorName);
-    // create input to assign nodes weight
-    let newWeight = document.createElement("input");
-    newWeight.id = "weight " + nodes;
-    let newWeightName = "weight " + nodes;
-    newWeight.setAttribute("type", "text");
-    newWeight.setAttribute("name", newWeightName);
-    newWeight.setAttribute("placeholder", "enter weight");
+    newColor.setAttribute("value", "#A70C0C");
     // create button to add nodes
     let newNode = document.createElement("button");
     newNode.id = "node " + nodes;
@@ -212,7 +226,9 @@ function addNode(clicked_id) {
     deleter.setAttribute("onclick", "removeNode(this.id)");
     // append new children to div
     newStyleDiv.appendChild(newName);
-    newStyleDiv.appendChild(newWeight);
+    newStyleDiv.appendChild(sizeBS);
+    newStyleDiv.appendChild(sizeBM);
+    newStyleDiv.appendChild(sizeBL);
     newStyleDiv.appendChild(newColor);
     newStyleDiv.appendChild(newNode);
     newStyleDiv.appendChild(deleter);
@@ -220,18 +236,230 @@ function addNode(clicked_id) {
     parentDiv.appendChild(newDiv);
 }
 
-
 // function to delete nodes
 function removeNode(clicked_id) {
     let currentNode = document.getElementById(clicked_id);
     let parentDiv = currentNode.closest(".nodeContainer");
-    let nodeNumber = parentDiv.childElementCount - 5;
-    if (nodeNumber > 5) {
+    let nodeNumber = Math.floor((parentDiv.querySelectorAll("*").length + 1) / 9);
+    if (parentDiv.id == 1 && nodeNumber < 6) {
+        parentDiv.remove();
+        nodes = 1;
+        let newDiv = document.createElement("div");
+    newDiv.className = "nodeContainer";
+    newDiv.id = nodes;
+    newDiv.setAttribute("ondrop", "drop(event)");
+    newDiv.setAttribute("ondragover", "allowDrop(event)");
+    newDiv.setAttribute("draggable", "true");
+    newDiv.setAttribute("ondragstart", "drag(event)");
+    // create a new div with class nodeStyle
+    let newStyleDiv = document.createElement("div");
+    newStyleDiv.className = "nodeStyle";
+    newStyleDiv.setAttribute("draggable", "true");
+    // create input to name nodes
+    let newName = document.createElement("input");
+    newName.id = "name " + nodes;
+    let newNameName = "name " + nodes;
+    newName.setAttribute("type", "text");
+    newName.setAttribute("name", newNameName);
+    newName.setAttribute("placeholder", "enter name");
+    // create input to give nodes a size
+    let sizeBS = document.createElement("button");
+    sizeBS.id = "smallB " + nodes;
+    sizeBS.style.height = "12px";
+    sizeBS.style.width = "12px";
+    sizeBS.style.borderRadius = "6px";
+    sizeBS.style.backgroundColor = "black";
+    sizeBS.style.opacity = "0.5";
+    sizeBS.style.border = "0";
+    sizeBS.style.outline = "none";
+    sizeBS.setAttribute("onclick", "smallB(this.id)")
+    let sizeBM = document.createElement("button");
+    sizeBM.id = "mediumB " + nodes;
+    sizeBM.style.height = "16px";
+    sizeBM.style.width = "16px";
+    sizeBM.style.borderRadius = "8px";
+    sizeBM.style.backgroundColor = "black";
+    sizeBM.style.opacity = "1";
+    sizeBM.style.border = "0";
+    sizeBM.style.outline = "none";
+    sizeBM.setAttribute("onclick", "mediumB(this.id)")
+    let sizeBL = document.createElement("button");
+    sizeBL.id = "largeB " + nodes;
+    sizeBL.style.height = "20px";
+    sizeBL.style.width = "20px";
+    sizeBL.style.borderRadius = "10px";
+    sizeBL.style.backgroundColor = "black";
+    sizeBL.style.opacity = "0.5";
+    sizeBL.style.border = "0";
+    sizeBL.style.outline = "none";
+    sizeBL.setAttribute("onclick", "largeB(this.id)")
+    // create input to assign node colors
+    let newColor = document.createElement("input");
+    newColor.id = "color " + nodes;
+    let newColorName = "name " + nodes;
+    newColor.setAttribute("type", "color");
+    newColor.setAttribute("name", newColorName);
+    newColor.setAttribute("value", "#A70C0C");
+    // create button to add nodes
+    let newNode = document.createElement("button");
+    newNode.id = "node " + nodes;
+    newNode.innerHTML = "+";
+    newNode.setAttribute("onclick", "addNode(this.id)");
+    // create button to remove nodes
+    let deleter = document.createElement("button");
+    deleter.id = "delete " + nodes;
+    deleter.innerHTML = "x";
+    deleter.setAttribute("onclick", "removeNode(this.id)");
+    // append new children to div
+    newStyleDiv.appendChild(newName);
+    newStyleDiv.appendChild(sizeBS);
+    newStyleDiv.appendChild(sizeBM);
+    newStyleDiv.appendChild(sizeBL);
+    newStyleDiv.appendChild(newColor);
+    newStyleDiv.appendChild(newNode);
+    newStyleDiv.appendChild(deleter);
+    newDiv.appendChild(newStyleDiv);
+        document.getElementById("hierarchy").appendChild(newDiv);
+    } else if (parentDiv.id == 1 && nodeNumber > 5) {
         let confirmation = confirm("This will delete " + nodeNumber + " nodes, are you sure you want to do this?");
         if (confirmation == true) {
             parentDiv.remove();
+            nodes = 1;
+            let newDiv = document.createElement("div");
+    newDiv.className = "nodeContainer";
+    newDiv.id = nodes;
+    newDiv.setAttribute("ondrop", "drop(event)");
+    newDiv.setAttribute("ondragover", "allowDrop(event)");
+    newDiv.setAttribute("draggable", "true");
+    newDiv.setAttribute("ondragstart", "drag(event)");
+    // create a new div with class nodeStyle
+    let newStyleDiv = document.createElement("div");
+    newStyleDiv.className = "nodeStyle";
+    newStyleDiv.setAttribute("draggable", "true");
+    // create input to name nodes
+    let newName = document.createElement("input");
+    newName.id = "name " + nodes;
+    let newNameName = "name " + nodes;
+    newName.setAttribute("type", "text");
+    newName.setAttribute("name", newNameName);
+    newName.setAttribute("placeholder", "enter name");
+    // create input to give nodes a size
+    let sizeBS = document.createElement("button");
+    sizeBS.id = "smallB " + nodes;
+    sizeBS.style.height = "12px";
+    sizeBS.style.width = "12px";
+    sizeBS.style.borderRadius = "6px";
+    sizeBS.style.backgroundColor = "black";
+    sizeBS.style.opacity = "0.5";
+    sizeBS.style.border = "0";
+    sizeBS.style.outline = "none";
+    sizeBS.setAttribute("onclick", "smallB(this.id)")
+    let sizeBM = document.createElement("button");
+    sizeBM.id = "mediumB " + nodes;
+    sizeBM.style.height = "16px";
+    sizeBM.style.width = "16px";
+    sizeBM.style.borderRadius = "8px";
+    sizeBM.style.backgroundColor = "black";
+    sizeBM.style.opacity = "1";
+    sizeBM.style.border = "0";
+    sizeBM.style.outline = "none";
+    sizeBM.setAttribute("onclick", "mediumB(this.id)")
+    let sizeBL = document.createElement("button");
+    sizeBL.id = "largeB " + nodes;
+    sizeBL.style.height = "20px";
+    sizeBL.style.width = "20px";
+    sizeBL.style.borderRadius = "10px";
+    sizeBL.style.backgroundColor = "black";
+    sizeBL.style.opacity = "0.5";
+    sizeBL.style.border = "0";
+    sizeBL.style.outline = "none";
+    sizeBL.setAttribute("onclick", "largeB(this.id)")
+    // create input to assign node colors
+    let newColor = document.createElement("input");
+    newColor.id = "color " + nodes;
+    let newColorName = "name " + nodes;
+    newColor.setAttribute("type", "color");
+    newColor.setAttribute("name", newColorName);
+    newColor.setAttribute("value", "#A70C0C");
+    // create button to add nodes
+    let newNode = document.createElement("button");
+    newNode.id = "node " + nodes;
+    newNode.innerHTML = "+";
+    newNode.setAttribute("onclick", "addNode(this.id)");
+    // create button to remove nodes
+    let deleter = document.createElement("button");
+    deleter.id = "delete " + nodes;
+    deleter.innerHTML = "x";
+    deleter.setAttribute("onclick", "removeNode(this.id)");
+    // append new children to div
+    newStyleDiv.appendChild(newName);
+    newStyleDiv.appendChild(sizeBS);
+    newStyleDiv.appendChild(sizeBM);
+    newStyleDiv.appendChild(sizeBL);
+    newStyleDiv.appendChild(newColor);
+    newStyleDiv.appendChild(newNode);
+    newStyleDiv.appendChild(deleter);
+    newDiv.appendChild(newStyleDiv);
+            document.getElementById("hierarchy").appendChild(newDiv);
+        }
+
+    } else if (parentDiv.id != 1 && nodeNumber > 5) {
+        let confirmation = confirm("This will delete " + nodeNumber + " nodes, are you sure you want to do this?");
+        if (confirmation == true) {
+            parentDiv.remove();
+            nodes = nodes - nodeNumber;
         }
     } else {
         parentDiv.remove();
+        nodes = nodes - nodeNumber;
     }
+}
+
+// functions to keep track of node size
+function smallB(clicked_id) {
+    document.getElementById(clicked_id).style.opacity = "1";
+    document.getElementById("mediumB " + clicked_id.slice(7)).style.opacity = ".5";
+    document.getElementById("largeB " + clicked_id.slice(7)).style.opacity = ".5";
+}
+function mediumB(clicked_id) {
+    document.getElementById(clicked_id).style.opacity = "1";
+    document.getElementById("smallB " + clicked_id.slice(8)).style.opacity = ".5";
+    document.getElementById("largeB " + clicked_id.slice(8)).style.opacity = ".5";
+}
+function largeB(clicked_id) {
+    document.getElementById(clicked_id).style.opacity = "1";
+    document.getElementById("mediumB " + clicked_id.slice(7)).style.opacity = ".5";
+    document.getElementById("smallB " + clicked_id.slice(7)).style.opacity = ".5";
+}
+
+// function to drag and drop
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+}
+
+// function to export 
+function exportNetwork(data_export) {
+const filename = 'data.json';
+const jsonStr = JSON.stringify(data_export);
+
+let element = document.createElement('a');
+element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonStr));
+element.setAttribute('download', filename);
+
+element.style.display = 'none';
+document.body.appendChild(element);
+
+element.click();
+
+document.body.removeChild(element);
 }

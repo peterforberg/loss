@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <!-- Import fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <!-- Link custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://d3js.org/d3.v6.min.js" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="js/tutorial.js"></script>
+    <script src="js/script.js"></script>
+    <title>loss</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: white;">
+      <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+              aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation" style="background-color: #A70C0C;">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                      <a class="nav-link" href="index.html">home</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="tutorial.html"  style="color:#A70C0C !important;">tutorial</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="lose.html">try out the tool</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="about.html">about</a>
+                </li>
+              </ul>
+              <span class="navbar-text">
+                  an exploration of loss and removal
+              </span>
+          </div>
+      </div>
+  </nav>
+
+    <div class="container justify-content-center">
+      <div id="tut1" class="tutorial" style="display:block;">
+      <p>Today, I want to remove a
+      <select id="object" name="object">
+        <option value="thing">thing</option>
+        <option value="person">person</option>
+        <option value="institution">institution</option>
+        <option value="system">system</option>
+        <option value="concept">concept</option>
+        <option value="event">event</option>
+      </select>
+      from
+      <select id="target" name="target">
+        <option value="society">society</option>
+        <option value="life">my life</option>
+        <option value="history">history</option>
+      </select>
+      </p>
+      <button onclick="tutorial(this.id); tutorialTopics();" id="tutb1">next</button>
+      </div>
+      <div id="tut2" class="tutorial" style="display:none;">
+        <div>
+          <p>Great, let's get a little more specific. What are you removing?</p>
+          <input type="text" id="tutQ1"><br>
+          <button onclick="tutorial(this.id)" id="tutb2">next</button>
+        </div>
+      </div>
+      <div id="tut3" class="tutorial" style="display:none;">
+        <p id="tutq1"></p>
+        <input type="text" id="tutQ2"><br>
+        <button onclick="tutorial(this.id)" id="tutb3">next</button>
+      </div>
+      <div id="tut4" class="tutorial" style="display:none;">
+        <p id="tutq2"></p>
+        <input type="text" id="tutQ3"><br>
+        <button onclick="tutorial(this.id)" id="tutb4">next</button>
+      </div>
+      <div id="tut5" class="tutorial" style="display:none;">
+        <p id=tutq3></p>
+        <input type="text" id="tutQ4"><br>
+        <button onclick="tutorial(this.id); generateNetwork(); generatesvg(data);" id="tutb5">next</button>
+      </div>
+      </div>
+      <div id="tut6" style="display:none;">
+        <div class="container justify-content-center writing" style="margin-bottom: 20px;">
+          <p>This is your network. It's not much now, but you can keep expanding it using the controls on the left. Pressing "+" will add more nodes underneath whichever node you've pressed. Pressing "x" will delete that node and all of the nodes underneath it. If you'd rather jsut rearrange the nodes, grab them by the pink bar on the left and drag them into the pink bar of another node to put them underneath. You can also adjust the size and color of the nodes (tip: if changing the color, use the little "dropper" tool to pick the same color for different nodes). You can also make a node have multiple connections: if, for example, you are making a network of city restaurants and two cities both have the same restaurant, you can put the same restaurant name under each node, and it'll appear only once in the visualization. One you're ready to generate your network, just hit "generate," and if you fancy yourself a data scientist, you can export your network to a JSON file to use in a different software. Last thing, you can <a href="lose.html">try out the tool</a> next time to avoid the tutorial.</p>
+        </div>
+        <div class="container-fluid">
+          <div class="row">
+          <div class="col-md" id="hierarchy">
+            <div class="nodeContainer" id="1" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)">
+              <div class="nodeStyle" draggable="true"><input id="name 1" type="text" name="name 1" placeholder="enter name"><button id="smallB 1" onclick="smallB(this.id)" style="height: 12px; width: 12px; border-radius: 6px; background-color: black; opacity: 0.5; border: 0px; outline: none;"></button><button id="mediumB 1" onclick="mediumB(this.id)" style="height: 16px; width: 16px; border-radius: 8px; background-color: black; opacity: 0.5; border: 0px; outline: none;"></button><button id="largeB 1" onclick="largeB(this.id)" style="height: 20px; width: 20px; border-radius: 10px; background-color: black; opacity: 1; border: 0px; outline: none;"></button><input id="color 1" type="color" name="name 1" value="#A70C0C"><button id="node 1" onclick="addNode(this.id)">+</button><button id="delete 1" onclick="removeNode(this.id)">x</button></div>
+            <div class="nodeContainer" id="2" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"><div class="nodeStyle" draggable="true"><input id="name 2" type="text" name="name 2" placeholder="enter name"><button id="smallB 2" onclick="smallB(this.id)" style="height: 12px; width: 12px; border-radius: 6px; background-color: black; opacity: 0.5; border: 0px; outline: none;"></button><button id="mediumB 2" onclick="mediumB(this.id)" style="height: 16px; width: 16px; border-radius: 8px; background-color: black; opacity: 1; border: 0px; outline: none;"></button><button id="largeB 2" onclick="largeB(this.id)" style="height: 20px; width: 20px; border-radius: 10px; background-color: black; opacity: 0.5; border: 0px; outline: none;"></button><input id="color 2" type="color" name="name 2" value="#A70C0C"><button id="node 2" onclick="addNode(this.id)">+</button><button id="delete 2" onclick="removeNode(this.id)">x</button></div><div class="nodeContainer" id="3" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"><div class="nodeStyle" draggable="true"><input id="name 3" type="text" name="name 3" placeholder="enter name"><button id="smallB 3" onclick="smallB(this.id)" style="height: 12px; width: 12px; border-radius: 6px; background-color: black; opacity: 0.5; border: 0px; outline: none;"></button><button id="mediumB 3" onclick="mediumB(this.id)" style="height: 16px; width: 16px; border-radius: 8px; background-color: black; opacity: 1; border: 0px; outline: none;"></button><button id="largeB 3" onclick="largeB(this.id)" style="height: 20px; width: 20px; border-radius: 10px; background-color: black; opacity: 0.5; border: 0px; outline: none;"></button><input id="color 3" type="color" name="name 3" value="#A70C0C"><button id="node 3" onclick="addNode(this.id)">+</button><button id="delete 3" onclick="removeNode(this.id)">x</button></div></div></div><div class="nodeContainer" id="4" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"><div class="nodeStyle" draggable="true"><input id="name 4" type="text" name="name 4" placeholder="enter name"><button id="smallB 4" onclick="smallB(this.id)" style="height: 12px; width: 12px; border-radius: 6px; background-color: black; opacity: 0.5; border: 0px; outline: none;"></button><button id="mediumB 4" onclick="mediumB(this.id)" style="height: 16px; width: 16px; border-radius: 8px; background-color: black; opacity: 1; border: 0px; outline: none;"></button><button id="largeB 4" onclick="largeB(this.id)" style="height: 20px; width: 20px; border-radius: 10px; background-color: black; opacity: 0.5; border: 0px; outline: none;"></button><input id="color 4" type="color" name="name 4" value="#A70C0C"><button id="node 4" onclick="addNode(this.id)">+</button><button id="delete 4" onclick="removeNode(this.id)">x</button></div></div></div>
+          </div>
+          <div class="col-md">
+            <button onclick="generateNetwork(); generatesvg(data)">generate</button>
+            <button onclick="exportNetwork(generateNetwork())">export</button>
+            <div id="graph" width="100vw" height="100vh"><svg width="600" height="600" id="svgid"><line stroke="black" stroke-width="2" x1="329.3313015473852" y1="296.7113420772553" x2="329.3313015473852" y2="296.7113420772553"></line><line stroke="black" stroke-width="2" x1="276.23696190692186" y1="301.85044025927147" x2="329.3313015473852" y2="296.7113420772553"></line><line stroke="black" stroke-width="2" x1="257.6338902512981" y1="253.84528150258197" x2="276.23696190692186" y2="301.85044025927147"></line><line stroke="black" stroke-width="2" x1="336.798725954976" y1="347.5922606747898" x2="329.3313015473852" y2="296.7113420772553"></line><g><g transform="translate(329.3313015473852, 296.7113420772553)" cx="329.3313015473852" cy="296.7113420772553" style="touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><circle r="20" fill="#a70c0c"></circle><text fill="none" stroke="white" stroke-width="3"></text><text fill="black" stroke="black" stroke-width="0.5"></text></g><g transform="translate(276.23696190692186, 301.85044025927147)" cx="276.23696190692186" cy="301.85044025927147" style="touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><circle r="10" fill="#a70c0c"></circle><text fill="none" stroke="white" stroke-width="3"></text><text fill="black" stroke="black" stroke-width="0.5"></text></g><g transform="translate(257.6338902512981, 253.84528150258197)" cx="257.6338902512981" cy="253.84528150258197" style="touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><circle r="10" fill="#a70c0c"></circle><text fill="none" stroke="white" stroke-width="3"></text><text fill="black" stroke="black" stroke-width="0.5"></text></g><g transform="translate(336.798725954976, 347.5922606747898)" cx="336.798725954976" cy="347.5922606747898" style="touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><circle r="10" fill="#a70c0c"></circle><text fill="none" stroke="white" stroke-width="3"></text><text fill="black" stroke="black" stroke-width="0.5"></text></g></g></svg></div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Bootstrap Functions -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha3/js/bootstrap.min.js"></script>
+  </body>
+</html>
